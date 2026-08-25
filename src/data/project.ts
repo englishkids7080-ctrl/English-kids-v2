@@ -15,7 +15,7 @@ export const INSTITUTION = {
     "Implementar tres actividades didácticas: tarjetas de vocabulario con pronunciación, quiz de opción múltiple con puntos y juego de memoria.",
     "Integrar pronunciación en inglés con la Web Speech API, sonidos de animales y retroalimentación sonora amable en cada respuesta.",
     "Evaluar el aprendizaje por módulos y generar un mini-certificado descargable al completar los seis temas.",
-    "Persistir perfiles de estudiantes y puntuaciones en MongoDB Atlas mediante funciones serverless desplegadas en Vercel.",
+    "Guardar el avance, las estrellas, el historial de partidas y el certificado en la caché local del navegador, para que cada equipo continúe donde quedó sin necesidad de cuentas ni servidores.",
   ],
   entregable: "Aplicación web completa: frontend, API y base de datos",
   tecnologias: [

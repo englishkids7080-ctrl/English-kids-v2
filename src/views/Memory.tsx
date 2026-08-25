@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import confetti from "canvas-confetti";
 import { Category, shuffle } from "../data/vocab";
-import { Student, saveScore } from "../lib/api";
+import { recordScore } from "../lib/store";
 import { playCorrect, playFlip, playWin, playWrong } from "../lib/sound";
 
 interface CardDef {
@@ -13,7 +13,6 @@ interface CardDef {
 
 interface Props {
   category: Category;
-  student: Student | null;
   onExit: () => void;
   notify: (msg: string) => void;
 }
@@ -34,7 +33,7 @@ function formatTime(s: number): string {
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 }
 
-export default function Memory({ category, student, onExit, notify }: Props) {
+export default function Memory({ category, onExit, notify }: Props) {
   const [deck, setDeck] = useState<CardDef[]>(() => buildDeck(category));
   const [flipped, setFlipped] = useState<number[]>([]);
   const [matched, setMatched] = useState<Set<string>>(new Set());
@@ -65,20 +64,12 @@ export default function Memory({ category, student, onExit, notify }: Props) {
         origin: { y: 0.5 },
         colors: ["#ffc531", "#ff6b6b", "#4bc96b", "#59b9f2", "#ff8fc0"],
       });
-      if (student) {
-        void saveScore({
-          studentId: student.id,
-          mode: "memory",
-          category: category.nameEn,
-          correct: totalPairs,
-          total: moves,
-        }).then(() => {
-          setSaved(true);
-          notify("¡Memoria guardada en tu perfil!");
-        });
-      }
+      // La partida queda guardada en la caché de este navegador
+      recordScore({ mode: "memory", category: category.id, correct: totalPairs, total: moves });
+      setSaved(true);
+      notify("¡Partida guardada en este equipo!");
     }
-  }, [matched, totalPairs, won, student, category.nameEn, moves, notify]);
+  }, [matched, totalPairs, won, category.id, moves, notify]);
 
   const flipCard = (index: number) => {
     if (lock || won) return;

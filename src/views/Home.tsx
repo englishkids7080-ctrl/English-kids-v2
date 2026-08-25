@@ -1,7 +1,6 @@
-import { useMemo } from "react";
 import { CATEGORIES, Category } from "../data/vocab";
 import { playClick } from "../lib/sound";
-import { getSummary, studentKey } from "../lib/progress";
+import { getBest, getState, getSummary, starsFor } from "../lib/store";
 
 export type Mode = "cards" | "quiz" | "memory";
 
@@ -9,8 +8,6 @@ interface Props {
   category: Category;
   onSelectCategory: (c: Category) => void;
   onPlay: (mode: Mode) => void;
-  studentName: string | null;
-  studentId: string | null;
   onOpenCertificate: () => void;
 }
 
@@ -60,29 +57,29 @@ const ACTIVITIES: { mode: Mode; title: string; desc: string; color: string; icon
   },
 ];
 
-export default function Home({ category, onSelectCategory, onPlay, studentName, studentId, onOpenCertificate }: Props) {
-  // Avance de módulos del estudiante (para el cofre del diploma)
-  const cert = useMemo(() => getSummary(studentKey(studentId)), [studentId]);
-  const ready = cert.allDone && !cert.claimed;
+export default function Home({ category, onSelectCategory, onPlay, onOpenCertificate }: Props) {
+  // Avance guardado en la caché de este navegador
+  const cert = getSummary();
+  const history = getState().history.slice(0, 4);
+  const byId = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]));
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-16">
       {/* saludo */}
       <div className="flex items-end gap-4 flex-wrap">
         <h2 className="font-display font-extrabold leading-[1.02] text-[clamp(1.9rem,5vw,3.1rem)]">
-          ¡Hola{studentName ? `, ${studentName}` : ""}!{" "}
-          <span className="text-sky-deep">¿Jugamos en inglés?</span>
+          ¡Hola! <span className="text-sky-deep">¿Jugamos en inglés?</span>
         </h2>
         <span className="font-display font-bold text-sm bg-sun border-[3px] border-ink rounded-full px-4 py-1.5 shadow-[0_4px_0_#1e3a6e] -rotate-2">
           6 temas · 58 palabras
         </span>
+        <p
+          className="inline-flex items-center gap-2 font-display font-bold text-xs sm:text-sm bg-sena text-white border-[3px] border-ink rounded-full px-4 py-1.5"
+          style={{ boxShadow: "0 4px 0 rgba(30,58,110,0.9)" }}
+        >
+          <span aria-hidden="true">🇨🇴</span> Proyecto formativo SENA · Ficha 7080 · ADSO
+        </p>
       </div>
-      <p
-        className="mt-3 inline-flex items-center gap-2 font-display font-bold text-xs sm:text-sm bg-sena text-white border-[3px] border-ink rounded-full px-4 py-1.5"
-        style={{ boxShadow: "0 4px 0 rgba(30,58,110,0.9)" }}
-      >
-        <span aria-hidden="true">🇨🇴</span> Proyecto formativo SENA · Ficha 7080 · ADSO
-      </p>
 
       {/* paso 1: tema */}
       <div className="mt-8">
@@ -93,7 +90,7 @@ export default function Home({ category, onSelectCategory, onPlay, studentName, 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 mt-4">
           {CATEGORIES.map((c) => {
             const active = c.id === category.id;
-            const done = Boolean(cert.done[c.id]);
+            const best = getBest(c.id);
             return (
               <button
                 key={c.id}
@@ -117,19 +114,21 @@ export default function Home({ category, onSelectCategory, onPlay, studentName, 
                 <span className={`text-xs font-bold ${active ? "text-ink/80" : "text-ink-soft"}`}>
                   {c.nameEs}
                 </span>
-                {done && (
-                  <span
-                    className="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-leaf border-[3px] border-ink flex items-center justify-center"
-                    title="Módulo superado"
-                  >
+                {/* mejores estrellas conseguidas en este tema */}
+                <span
+                  className="text-[11px] leading-none tracking-tight mt-0.5"
+                  aria-label={best > 0 ? `Mejor puntaje: ${best} de 5 estrellas` : "Sin puntaje aún"}
+                  title={best > 0 ? `Mejor: ${best} ★` : "Juega el quiz para ganar estrellas"}
+                >
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <span key={n} className={n <= best ? "text-sun-deep" : "text-ink/20"}>★</span>
+                  ))}
+                </span>
+                {cert.modules[c.id] && (
+                  <span className="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-leaf border-[3px] border-ink flex items-center justify-center anim-pop" title="Módulo superado">
                     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
                       <path d="M2 6.5 L4.8 9 L10 3.5" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                  </span>
-                )}
-                {active && !done && (
-                  <span className="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-coral border-[3px] border-ink flex items-center justify-center anim-pop">
-                    <span className="w-2.5 h-2.5 rounded-full bg-white" />
                   </span>
                 )}
               </button>
@@ -177,92 +176,103 @@ export default function Home({ category, onSelectCategory, onPlay, studentName, 
         </div>
       </div>
 
-      {/* paso 3: el gran diploma (módulos + cofre) */}
+      {/* paso 3: el gran diploma */}
       <div className="mt-10">
         <p className="font-display font-bold text-lg flex items-center gap-2.5">
           <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-ink text-white text-base">3</span>
-          Tu gran diploma
+          El Gran Diploma
         </p>
         <div
-          className={`card-toy mt-4 p-5 sm:p-6 ${ready ? "tile-wobble" : ""}`}
-          style={ready ? { background: "#fffdf2", borderColor: "#f5a623", boxShadow: "0 6px 0 #f5a623" } : undefined}
+          className={`card-toy mt-4 px-6 py-6 grid md:grid-cols-[auto_1fr_auto] gap-5 items-center ${
+            cert.allDone ? "anim-pop" : ""
+          }`}
+          style={{
+            background: cert.allDone ? "#fff6d9" : "#ffffff",
+            borderColor: cert.allDone ? "#f5a623" : "#1e3a6e",
+            boxShadow: cert.allDone ? "0 6px 0 #f5a623" : undefined,
+          }}
         >
-          <div className="flex items-center gap-4 flex-wrap">
-            {/* cofre */}
-            <button
-              onClick={() => {
-                playClick();
-                onOpenCertificate();
-              }}
-              className={`relative shrink-0 w-20 h-20 rounded-2xl border-[3px] border-ink flex items-center justify-center text-4xl cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
-                cert.claimed
-                  ? "bg-sun"
-                  : cert.allDone
-                  ? "bg-sun anim-bounce"
-                  : "bg-[#dfe8f5]"
-              }`}
-              aria-label={
-                cert.claimed
-                  ? "Ver mi certificado"
-                  : cert.allDone
-                  ? "¡Abrir el cofre del certificado!"
-                  : `Cofre bloqueado: te faltan ${cert.total - cert.doneCount} módulos`
-              }
-              title={cert.claimed ? "Ver mi certificado" : cert.allDone ? "¡Cofre desbloqueado!" : `Te faltan ${cert.total - cert.doneCount} módulos`}
-            >
-              <span aria-hidden="true">{cert.claimed ? "🎓" : cert.allDone ? "🔓" : "🔒"}</span>
-              {ready && (
-                <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-coral border-[3px] border-ink anim-bounce" />
-              )}
-            </button>
-
-            <div className="flex-1 min-w-[220px]">
-              <p className="font-display font-extrabold text-xl">
-                {cert.claimed
-                  ? `¡Diploma de ${cert.cert?.name ?? "campeón"} reclamado! 🎉`
-                  : cert.allDone
-                  ? "¡Todos los módulos completos! ¡Reclama tu certificado!"
-                  : `Supera el quiz de cada tema: llevas ${cert.doneCount} de ${cert.total} módulos`}
-              </p>
-              {/* barra de avance */}
-              <div className="mt-2 h-5 rounded-full border-[3px] border-ink bg-white overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-700"
-                  style={{
-                    width: `${(cert.doneCount / cert.total) * 100}%`,
-                    background: "repeating-linear-gradient(45deg,#4bc96b 0 12px,#5fd67d 12px 24px)",
-                  }}
-                />
-              </div>
+          <span className="text-6xl anim-float justify-self-center" aria-hidden="true">
+            {cert.allDone ? "🔓" : "🔒"}
+          </span>
+          <div>
+            <p className="font-display font-extrabold text-xl">
+              {cert.allDone ? "¡Cofre desbloqueado!" : "Completa los 6 módulos"}
+            </p>
+            <p className="text-sm font-bold text-ink-soft mt-0.5">
+              {cert.allDone
+                ? cert.claimed
+                  ? `Certificado de ${cert.cert?.name} creado. ¡Puedes verlo e imprimirlo cuando quieras!`
+                  : "Ya puedes reclamar tu mini-certificado con tu nombre."
+                : "Supera el quiz de cada tema (4+ aciertos) para abrir el cofre del certificado."}
+            </p>
+            <div className="flex gap-2 mt-3 flex-wrap" aria-label={`${cert.doneCount} de ${cert.total} módulos`}>
+              {CATEGORIES.map((c) => {
+                const done = Boolean(cert.modules[c.id]);
+                return (
+                  <span
+                    key={c.id}
+                    className="inline-flex items-center gap-1 font-display font-bold text-xs border-2 border-ink rounded-full px-2.5 py-1"
+                    style={{ background: done ? c.color : "#f2f6ff", opacity: done ? 1 : 0.75 }}
+                  >
+                    <span aria-hidden="true">{c.emoji}</span>
+                    {done ? "✓" : "·"}
+                  </span>
+                );
+              })}
             </div>
           </div>
+          <button
+            onClick={() => {
+              playClick();
+              onOpenCertificate();
+            }}
+            className="btn-toy px-6 py-3 text-lg justify-self-center"
+            style={{
+              background: cert.allDone ? "#ffc531" : "#ffffff",
+              color: "#1e3a6e",
+            }}
+          >
+            {cert.allDone ? (cert.claimed ? "Ver mi diploma" : "¡Reclamar diploma!") : "Ver diploma"}
+          </button>
+        </div>
+      </div>
 
-          {/* los 6 módulos */}
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {CATEGORIES.map((c) => {
-              const done = Boolean(cert.done[c.id]);
+      {/* últimas partidas (guardadas en este navegador) */}
+      <div className="mt-10">
+        <p className="font-display font-bold text-lg flex items-center gap-2.5">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-ink text-white text-base">🕹️</span>
+          Tus últimas partidas
+          <span className="font-body font-bold text-xs text-ink-soft">(guardadas en este navegador)</span>
+        </p>
+        {history.length === 0 ? (
+          <p className="card-toy mt-4 px-5 py-4 font-bold text-ink-soft">
+            Aún no hay partidas registradas… ¡juega tu primer quiz y aparecerán aquí! 🚀
+          </p>
+        ) : (
+          <ul className="grid sm:grid-cols-2 gap-3 mt-4">
+            {history.map((h) => {
+              const cat = byId[h.category];
               return (
-                <li
-                  key={c.id}
-                  className="flex items-center gap-1.5 font-display font-bold text-sm border-[3px] rounded-full px-3 py-1"
-                  style={{
-                    borderColor: "#1e3a6e",
-                    background: done ? c.color : "#ffffff",
-                    opacity: done ? 1 : 0.75,
-                  }}
-                >
-                  <span aria-hidden="true">{c.emoji}</span>
-                  {c.nameEn}
-                  {done && (
-                    <svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true">
-                      <path d="M2 6.5 L4.8 9 L10 3.5" fill="none" stroke="#1e3a6e" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
+                <li key={h.id} className="card-toy px-4 py-3 flex items-center gap-3">
+                  <span className="text-3xl" aria-hidden="true">{cat?.emoji ?? "🎲"}</span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block font-display font-extrabold">
+                      {h.mode === "quiz" ? "Quiz" : "Memoria"} · {cat?.nameEn ?? h.category}
+                    </span>
+                    <span className="block text-sm font-bold text-ink-soft truncate">
+                      {h.mode === "quiz"
+                        ? `${h.correct}/${h.total} aciertos · ${"★".repeat(starsFor(h.correct, h.total)) || "sin estrellas"}`
+                        : `${h.correct} parejas en ${h.total} intentos`}
+                      {" · "}
+                      {new Date(h.date).toLocaleDateString("es-CO", { day: "2-digit", month: "short" })}
+                    </span>
+                  </span>
                 </li>
               );
             })}
           </ul>
-        </div>
+        )}
       </div>
     </div>
   );

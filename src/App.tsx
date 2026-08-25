@@ -1,60 +1,27 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Background from "./components/Background";
 import Mascot from "./components/Mascot";
 import Home, { Mode } from "./views/Home";
 import Flashcards from "./views/Flashcards";
 import Quiz from "./views/Quiz";
 import Memory from "./views/Memory";
-import Students from "./views/Students";
 import Certificate from "./views/Certificate";
 import Project from "./views/Project";
 import { CATEGORIES, Category } from "./data/vocab";
-import { Student, checkCloud } from "./lib/api";
 import { playClick } from "./lib/sound";
 
-type View = "home" | "cards" | "quiz" | "memory" | "students" | "certificado" | "proyecto";
-
-const LS_ACTIVE = "ek_active_student";
-
-function loadActive(): Student | null {
-  try {
-    const raw = localStorage.getItem(LS_ACTIVE);
-    return raw ? (JSON.parse(raw) as Student) : null;
-  } catch {
-    return null;
-  }
-}
-
-function persistActive(s: Student | null) {
-  try {
-    if (s) localStorage.setItem(LS_ACTIVE, JSON.stringify(s));
-    else localStorage.removeItem(LS_ACTIVE);
-  } catch {
-    /* sin almacenamiento */
-  }
-}
+type View = "home" | "cards" | "quiz" | "memory" | "certificado" | "proyecto";
 
 export default function App() {
   const [view, setView] = useState<View>("home");
   const [category, setCategory] = useState<Category>(CATEGORIES[0]);
-  const [activeStudent, setActiveStudent] = useState<Student | null>(loadActive);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<number | null>(null);
-
-  /* Comprueba una sola vez si hay backend (MongoDB en Vercel). */
-  useEffect(() => {
-    void checkCloud();
-  }, []);
 
   const notify = useCallback((msg: string) => {
     setToast(msg);
     if (toastTimer.current) window.clearTimeout(toastTimer.current);
     toastTimer.current = window.setTimeout(() => setToast(null), 2600);
-  }, []);
-
-  const setActive = useCallback((s: Student | null) => {
-    setActiveStudent(s);
-    persistActive(s);
   }, []);
 
   const go = (v: View) => {
@@ -103,21 +70,6 @@ export default function App() {
                 Jugar
               </button>
               <button
-                onClick={() => go("students")}
-                className="btn-toy px-4 py-2 text-sm sm:text-base"
-                style={{
-                  background: view === "students" ? "#8f7bf7" : "#ffffff",
-                  color: view === "students" ? "#ffffff" : "#1e3a6e",
-                }}
-                aria-current={view === "students" ? "page" : undefined}
-              >
-                <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" strokeWidth="2.2" />
-                  <path d="M4.5 20.5 c 1 -4 4 -6 7.5 -6 s 6.5 2 7.5 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-                </svg>
-                Alumnos
-              </button>
-              <button
                 onClick={() => go("certificado")}
                 className="btn-toy px-4 py-2 text-sm sm:text-base"
                 style={{
@@ -146,15 +98,6 @@ export default function App() {
                 </svg>
                 Proyecto
               </button>
-              {activeStudent && (
-                <span
-                  className="hidden sm:inline-flex items-center gap-1.5 font-display font-bold text-sm bg-leaf text-white border-[3px] border-ink rounded-full pl-2 pr-3.5 py-1.5"
-                  title="Perfil activo"
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-white anim-bounce" aria-hidden="true" />
-                  {activeStudent.name}
-                </span>
-              )}
             </nav>
           </div>
         </header>
@@ -166,8 +109,6 @@ export default function App() {
               category={category}
               onSelectCategory={setCategory}
               onPlay={(mode: Mode) => go(mode)}
-              studentName={activeStudent?.name ?? null}
-              studentId={activeStudent?.id ?? null}
               onOpenCertificate={() => go("certificado")}
             />
           )}
@@ -175,20 +116,13 @@ export default function App() {
           {view === "quiz" && (
             <Quiz
               category={category}
-              student={activeStudent}
               onExit={goHome}
               onGoCertificate={() => go("certificado")}
-              onStudentCreated={setActive}
               notify={notify}
             />
           )}
-          {view === "memory" && (
-            <Memory category={category} student={activeStudent} onExit={goHome} notify={notify} />
-          )}
-          {view === "students" && (
-            <Students active={activeStudent} setActive={setActive} notify={notify} />
-          )}
-          {view === "certificado" && <Certificate student={activeStudent} notify={notify} />}
+          {view === "memory" && <Memory category={category} onExit={goHome} notify={notify} />}
+          {view === "certificado" && <Certificate notify={notify} />}
           {view === "proyecto" && <Project notify={notify} />}
         </main>
 
@@ -196,7 +130,7 @@ export default function App() {
         <footer className="max-w-6xl mx-auto px-4 sm:px-6 pb-8 mt-4">
           <div className="text-center font-bold text-sm text-ink-soft bg-white/60 border-2 border-ink/15 rounded-2xl px-4 py-3">
             English Kids · Proyecto formativo <strong className="text-sena-deep">SENA</strong> 🇨🇴 ·
-            Ficha 7080 · ADSO · React + MongoDB en Vercel · hecho con mucho cariño 🌈
+            Ficha 7080 · ADSO · tu avance se guarda en este navegador · hecho con cariño 🌈
           </div>
         </footer>
       </div>
