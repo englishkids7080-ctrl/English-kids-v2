@@ -1,0 +1,41 @@
+export const INSTITUTION = {
+  nombre: "SENA",
+  nombreCompleto: "Servicio Nacional de Aprendizaje",
+  pais: "Colombia",
+  programa: "Análisis y Desarrollo de Software (ADSO)",
+  ficha: "7080",
+  proyecto: "English Kids",
+  slogan: "Formación gratuita para todos los colombianos",
+  descripcion:
+    "English Kids es una aplicación web pensada para que los niños aprendan inglés jugando: exploran vocabulario por temas con tarjetas interactivas y pronunciación real, ponen a prueba lo aprendido en un quiz con corazones y puntos, refuerzan lo visto con un juego de memoria y, al completar los seis módulos, reclaman su mini-certificado de aprendizaje. Nació como proyecto formativo del SENA para desarrollar, de punta a punta, una solución web moderna: frontend con React, API serverless y base de datos en la nube con MongoDB desplegada en Vercel.",
+  objetivoGeneral:
+    "Desarrollar una aplicación web interactiva que facilite la enseñanza y el aprendizaje de vocabulario básico de inglés en niños de educación básica primaria, a través de actividades lúdicas con retroalimentación inmediata, como proyecto formativo del programa de Análisis y Desarrollo de Software del SENA.",
+  objetivosEspecificos: [
+    "Diseñar una interfaz amigable, colorida y accesible, pensada para niños de 6 a 12 años.",
+    "Implementar tres actividades didácticas: tarjetas de vocabulario con pronunciación, quiz de opción múltiple con puntos y juego de memoria.",
+    "Integrar pronunciación en inglés con la Web Speech API, sonidos de animales y retroalimentación sonora amable en cada respuesta.",
+    "Evaluar el aprendizaje por módulos y generar un mini-certificado descargable al completar los seis temas.",
+    "Persistir perfiles de estudiantes y puntuaciones en MongoDB Atlas mediante funciones serverless desplegadas en Vercel.",
+  ],
+  entregable: "Aplicación web completa: frontend, API y base de datos",
+  tecnologias: [
+    "React 18",
+    "Vite",
+    "TypeScript",
+    "Tailwind CSS",
+    "MongoDB Atlas",
+    "Vercel Functions",
+    "Web Speech API",
+    "WebAudio API",
+    "Canvas Confetti",
+  ],
+  fichaTecnica: [
+    ["Institución", "SENA — Servicio Nacional de Aprendizaje"],
+    ["País", "Colombia 🇨🇴"],
+    ["Programa de formación", "Análisis y Desarrollo de Software (ADSO)"],
+    ["Ficha", "7080"],
+    ["Proyecto formativo", "English Kids"],
+    ["Entregable", "Aplicación web (frontend + API + base de datos)"],
+    ["Estado", "Funcional · listo para desplegar"],
+  ] as [string, string][],
+};
