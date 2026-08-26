@@ -237,8 +237,8 @@ export default function Certificate({ notify }: Props) {
               <span className="absolute bottom-3 right-3 text-2xl" aria-hidden="true">🌟</span>
 
               <div className="m-4 border-4 border-dashed border-sun-deep rounded-3xl px-5 py-8 sm:px-10 text-center">
-                <p className="font-display font-bold tracking-[0.3em] text-sena-deep text-sm">
-                  ENGLISH KIDS · SENA
+                <p className="font-display font-bold tracking-[0.3em] text-sky-deep text-sm">
+                  ENGLISH KIDS
                 </p>
                 <h3 className="font-display font-extrabold text-4xl sm:text-5xl mt-2">
                   ¡Mini-Certificado!
