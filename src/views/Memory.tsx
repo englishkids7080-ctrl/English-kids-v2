@@ -64,7 +64,6 @@ export default function Memory({ category, onExit, notify }: Props) {
         origin: { y: 0.5 },
         colors: ["#ffc531", "#ff6b6b", "#4bc96b", "#59b9f2", "#ff8fc0"],
       });
-      // La partida queda guardada en la caché de este navegador
       recordScore({ mode: "memory", category: category.id, correct: totalPairs, total: moves });
       setSaved(true);
       notify("¡Partida guardada en este equipo!");
@@ -110,7 +109,6 @@ export default function Memory({ category, onExit, notify }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 pb-16">
-      {/* cabecera */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <button onClick={onExit} className="btn-toy bg-white text-ink px-4 py-2 text-sm">
           Salir
@@ -126,7 +124,6 @@ export default function Memory({ category, onExit, notify }: Props) {
         </button>
       </div>
 
-      {/* marcadores */}
       <div className="flex gap-3 mt-5 flex-wrap">
         {[
           { label: "Parejas", value: `${matched.size}/${totalPairs}` },
@@ -140,7 +137,6 @@ export default function Memory({ category, onExit, notify }: Props) {
         ))}
       </div>
 
-      {/* tablero */}
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-6">
         {deck.map((card, i) => {
           const up = isUp(i);
@@ -155,11 +151,9 @@ export default function Memory({ category, onExit, notify }: Props) {
                 onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && flipCard(i)}
                 aria-label={up ? (card.type === "emoji" ? card.wordEn : card.label) : "Carta oculta"}
               >
-                {/* dorso */}
                 <div className="flip-face card-toy cursor-pointer flex items-center justify-center" style={{ background: "repeating-linear-gradient(45deg,#59b9f2 0 14px,#4aa8e4 14px 28px)" }}>
                   <span className="font-display font-extrabold text-4xl text-white" style={{ textShadow: "2px 3px 0 #1e3a6e" }} aria-hidden="true">?</span>
                 </div>
-                {/* cara */}
                 <div
                   className={`flip-face flip-back card-toy flex items-center justify-center p-2 ${done ? "" : "cursor-pointer"}`}
                   style={{
@@ -180,7 +174,6 @@ export default function Memory({ category, onExit, notify }: Props) {
         })}
       </div>
 
-      {/* victoria */}
       {won && (
         <div className="card-toy mt-7 p-6 text-center anim-pop" style={{ background: "#fffdf4" }}>
           <p className="text-5xl" aria-hidden="true">🏆</p>

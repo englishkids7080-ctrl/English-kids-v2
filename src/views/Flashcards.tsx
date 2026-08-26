@@ -42,10 +42,9 @@ export default function Flashcards({ category, onExit }: Props) {
     playFlip();
     setFlipped((f) => {
       if (!f) {
-        // Si la tarjeta es de un animal, primero suena el animal…
         if (category.id === "animals") {
           playAnimal(word.en);
-          window.setTimeout(() => speak(word.en), 700); // …y luego la voz, pausada
+          window.setTimeout(() => speak(word.en), 700);
         } else {
           speak(word.en);
         }
@@ -63,7 +62,6 @@ export default function Flashcards({ category, onExit }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 pb-16">
-      {/* cabecera */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <button onClick={onExit} className="btn-toy bg-white text-ink px-4 py-2 text-sm">
           <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
@@ -85,10 +83,8 @@ export default function Flashcards({ category, onExit }: Props) {
         </button>
       </div>
 
-      {/* tarjeta */}
       <div className="mt-6 flip-scene" style={{ height: 360 }}>
         <div className={`flip-inner ${flipped ? "flipped" : ""}`} onClick={flip} role="button" tabIndex={0} aria-label={flipped ? `Palabra: ${word.en}` : "Toca para ver la palabra"}>
-          {/* frente: dibujo */}
           <div className="flip-face card-toy flex flex-col items-center justify-center gap-3 cursor-pointer select-none" style={{ background: "#ffffff" }}>
             <span className="text-[7rem] leading-none anim-float" aria-hidden="true">{word.emoji}</span>
             <span className="font-display font-bold text-xl text-ink-soft">¿Cómo se dice en inglés?</span>
@@ -96,9 +92,7 @@ export default function Flashcards({ category, onExit }: Props) {
               Toca la tarjeta para voltearla
             </span>
           </div>
-          {/* reverso: palabra */}
           <div className="flip-face flip-back card-toy flex flex-col items-center justify-center gap-2 cursor-pointer select-none" style={{ background: category.color }}>
-            {/* las letras en inglés florecen una a una al voltear */}
             <span className="font-display font-extrabold text-[clamp(2.6rem,9vw,4rem)] leading-none text-ink">
               <Letters word={word.en} animateIn={flipped} />
             </span>
@@ -126,7 +120,6 @@ export default function Flashcards({ category, onExit }: Props) {
         </div>
       </div>
 
-      {/* controles */}
       <div className="flex items-center justify-between mt-5 gap-3">
         <button onClick={() => go(-1)} className="btn-toy bg-white text-ink px-5 py-2.5" aria-label="Tarjeta anterior">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">

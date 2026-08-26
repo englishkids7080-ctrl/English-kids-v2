@@ -1,38 +1,24 @@
-/**
- * ============================================================
- *  ALMACENAMIENTO LOCAL — English Kids
- *  Todo el avance vive en la caché del navegador (localStorage):
- *  módulos superados, mejores estrellas, historial y certificado.
- *  Sin cuentas ni servidores: cada equipo guarda su propio avance
- *  y continúa donde quedó, incluso sin internet.
- * ============================================================
- */
-
 import { CATEGORIES } from "../data/vocab";
 
 export interface ScoreRecord {
   id: string;
   mode: "quiz" | "memory";
-  /** id de la categoría (para buscarla en CATEGORIES) */
   category: string;
   correct: number;
   total: number;
-  date: string; // ISO
+  date: string;
 }
 
 export interface CertificateData {
   name: string;
-  date: string; // fecha legible
+  date: string;
 }
 
 export interface StoreData {
   v: number;
-  /** id de categoría -> fecha ISO en que se aprobó el módulo */
   modules: Record<string, string>;
-  /** id de categoría -> mejores estrellas (0 a 5) */
   best: Record<string, number>;
   cert: CertificateData | null;
-  /** partidas más recientes primero (con tope para no crecer sin límite) */
   history: ScoreRecord[];
 }
 
@@ -47,7 +33,7 @@ export interface ProgressSummary {
 
 const KEY = "englishkids_v1";
 const HISTORY_LIMIT = 30;
-export const PASS_SCORE = 4; // aciertos mínimos para aprobar un módulo
+export const PASS_SCORE = 4;
 
 let cache: StoreData | null = null;
 
@@ -55,7 +41,6 @@ function emptyState(): StoreData {
   return { v: 1, modules: {}, best: {}, cert: null, history: [] };
 }
 
-/** Carga el estado: una sola lectura real al disco; el resto desde memoria. */
 export function getState(): StoreData {
   if (cache) return cache;
   try {
@@ -71,7 +56,7 @@ function persist() {
   try {
     localStorage.setItem(KEY, JSON.stringify(cache));
   } catch {
-    /* almacenamiento lleno o bloqueado: la app sigue funcionando en memoria */
+    return;
   }
 }
 
@@ -83,7 +68,6 @@ function uid(): string {
   }
 }
 
-/** Estrellas según los aciertos (de 0 a 5). */
 export function starsFor(correct: number, total: number): number {
   if (correct <= 0) return 0;
   const r = correct / Math.max(1, total);
@@ -94,12 +78,10 @@ export function starsFor(correct: number, total: number): number {
   return 1;
 }
 
-/** Mejores estrellas conseguidas en un tema (0 si aún no se juega). */
 export function getBest(categoryId: string): number {
   return getState().best[categoryId] ?? 0;
 }
 
-/** Registra una partida: actualiza estrellas, historial y recorta el tope. */
 export function recordScore(entry: Omit<ScoreRecord, "id" | "date">): ScoreRecord {
   const s = getState();
   const rec: ScoreRecord = { ...entry, id: uid(), date: new Date().toISOString() };
@@ -112,7 +94,6 @@ export function recordScore(entry: Omit<ScoreRecord, "id" | "date">): ScoreRecor
   return rec;
 }
 
-/** Resumen de progreso listo para la interfaz. */
 export function getSummary(): ProgressSummary {
   const s = getState();
   const doneCount = CATEGORIES.filter((c) => s.modules[c.id]).length;
@@ -126,7 +107,6 @@ export function getSummary(): ProgressSummary {
   };
 }
 
-/** Marca un módulo como aprobado (solo la primera vez). */
 export function markModuleDone(categoryId: string): ProgressSummary {
   const s = getState();
   if (!s.modules[categoryId]) {
@@ -136,7 +116,6 @@ export function markModuleDone(categoryId: string): ProgressSummary {
   return getSummary();
 }
 
-/** Reclama y sella el certificado con nombre y fecha de hoy. */
 export function claimCertificate(name: string): CertificateData {
   const s = getState();
   const cert: CertificateData = {
@@ -152,7 +131,6 @@ export function claimCertificate(name: string): CertificateData {
   return cert;
 }
 
-/** Borra todo el progreso guardado en este navegador. */
 export function resetProgress(): void {
   cache = emptyState();
   persist();
