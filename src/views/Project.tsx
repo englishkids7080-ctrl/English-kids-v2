@@ -1,24 +1,5 @@
-import { useEffect, useState } from "react";
 import { INSTITUTION } from "../data/project";
 import { AVATARS } from "../data/vocab";
-
-const LS_TEAM = "ek_team_names_v2";
-
-function loadTeam(): string[] {
-  const size = INSTITUTION.integrantes.length;
-  try {
-    const raw = localStorage.getItem(LS_TEAM);
-    if (raw) {
-      const arr = JSON.parse(raw) as string[];
-      if (Array.isArray(arr)) {
-        return INSTITUTION.integrantes.map((def, i) => arr[i] ?? def);
-      }
-    }
-  } catch {
-    /* equipo por defecto del documento */
-  }
-  return [...INSTITUTION.integrantes];
-}
 
 /** Logo institucional SENA (interpretación decorativa en SVG). */
 function SenaLogo({ size = 74 }: { size?: number }) {
@@ -40,27 +21,6 @@ function SenaLogo({ size = 74 }: { size?: number }) {
 }
 
 export default function Project({ notify }: { notify: (msg: string) => void }) {
-  const [team, setTeam] = useState<string[]>(loadTeam);
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    if (!saved) return;
-    const t = window.setTimeout(() => setSaved(false), 1600);
-    return () => window.clearTimeout(t);
-  }, [saved]);
-
-  const setName = (i: number, value: string) => {
-    const next = [...team];
-    next[i] = value;
-    setTeam(next);
-    try {
-      localStorage.setItem(LS_TEAM, JSON.stringify(next));
-      setSaved(true);
-    } catch {
-      /* sin almacenamiento */
-    }
-  };
-
   return (
     <div className="max-w-5xl mx-auto px-4 pb-16">
       {/* ================= carátula institucional ================= */}
@@ -194,20 +154,15 @@ export default function Project({ notify }: { notify: (msg: string) => void }) {
         <div className="flex items-center gap-2.5 flex-wrap">
           <span className="w-9 h-9 rounded-xl bg-candy border-[3px] border-ink flex items-center justify-center text-lg" aria-hidden="true">👥</span>
           <h2 className="font-display font-extrabold text-2xl">Equipo de proyecto</h2>
-          {saved && (
-            <span className="anim-pop font-display font-bold text-sm text-leaf border-2 border-leaf rounded-full px-3 py-0.5">
-              ✓ guardado
-            </span>
-          )}
         </div>
         <p className="font-bold text-ink-soft text-sm mt-2">
-          Aprendices del programa {INSTITUTION.programa} — los nombres pueden editarse y quedan guardados en este equipo.
+          Aprendices del programa {INSTITUTION.programa}.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
-          {team.map((name, i) => (
-            <label
-              key={i}
-              className="flex items-center gap-3 border-[3px] border-ink rounded-2xl bg-paper px-3 py-2.5 focus-within:border-leaf transition-colors"
+          {INSTITUTION.integrantes.map((name, i) => (
+            <div
+              key={name}
+              className="tile-wobble flex items-center gap-3 border-[3px] border-ink rounded-2xl bg-paper px-3 py-2.5"
             >
               <span className="w-10 h-10 rounded-full border-[3px] border-ink flex items-center justify-center text-xl bg-white shrink-0" aria-hidden="true">
                 {AVATARS[(i + 3) % AVATARS.length]}
@@ -216,15 +171,9 @@ export default function Project({ notify }: { notify: (msg: string) => void }) {
                 <span className="font-display font-bold text-[10px] uppercase tracking-[0.16em] text-ink-soft">
                   Integrante {i + 1}
                 </span>
-                <input
-                  value={name}
-                  onChange={(e) => setName(i, e.target.value)}
-                  maxLength={40}
-                  className="bg-transparent outline-none font-display font-extrabold text-base text-ink placeholder:text-ink/30 truncate"
-                  aria-label={`Nombre del integrante ${i + 1}`}
-                />
+                <span className="font-display font-extrabold text-base text-ink truncate">{name}</span>
               </span>
-            </label>
+            </div>
           ))}
         </div>
       </section>
