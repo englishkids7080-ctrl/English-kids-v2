@@ -207,31 +207,6 @@ export default function Project({ notify }: { notify: (msg: string) => void }) {
         </div>
       </section>
 
-      {/* ================= cronograma (hitos) ================= */}
-      <section className="card-toy p-6 mt-7 bg-white">
-        <h2 className="font-display font-extrabold text-2xl flex items-center gap-2.5">
-          <span className="w-9 h-9 rounded-xl bg-sky border-[3px] border-ink flex items-center justify-center text-lg" aria-hidden="true">🗓️</span>
-          Hitos del cronograma
-          <span className="font-body font-bold text-xs text-ink-soft">ago 2025 → oct 2026</span>
-        </h2>
-        <ol className="relative mt-5 ml-3 border-l-[3px] border-dashed border-ink/30 space-y-5">
-          {INSTITUTION.hitos.map((h, i) => (
-            <li key={h.titulo} className="relative pl-6">
-              <span
-                className="absolute -left-[13px] top-1 w-6 h-6 rounded-full border-[3px] border-ink flex items-center justify-center font-display font-extrabold text-[11px]"
-                style={{ background: ["#ffc531", "#59b9f2", "#ff8fc0", "#4bc96b", "#8f7bf7", "#ff6b6b", "#39a900"][i % 7], color: "#1e3a6e" }}
-                aria-hidden="true"
-              >
-                {i + 1}
-              </span>
-              <p className="font-display font-extrabold text-sm text-sky-deep">{h.fecha}</p>
-              <p className="font-display font-extrabold text-lg leading-tight">{h.titulo}</p>
-              <p className="font-bold text-sm text-ink-soft">{h.detalle}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
       {/* ================= ficha técnica ================= */}
       <section className="card-toy p-6 mt-5 bg-white">
         <h2 className="font-display font-extrabold text-2xl flex items-center gap-2.5">

@@ -99,15 +99,7 @@ export const INSTITUTION = {
     },
   ],
 
-  hitos: [
-    { fecha: "4 ago 2025", titulo: "Inicio del proyecto", detalle: "Identificación del problema en el aula" },
-    { fecha: "ago – sep 2025", titulo: "Idea y sustentación", detalle: "La propuesta se presenta y aprueba ante el grupo" },
-    { fecha: "16 – 20 feb 2026", titulo: "Encuesta a docentes", detalle: "Datos reales para definir contenidos y funciones" },
-    { fecha: "8 – 13 abr 2026", titulo: "Bocetos de la interfaz", detalle: "6 pantallas principales diseñadas para niños" },
-    { fecha: "10 – 19 jun 2026", titulo: "Seguimiento de progreso", detalle: "Panel de nivel, puntaje y actividades completadas" },
-    { fecha: "10 – 14 ago 2026", titulo: "Prueba piloto", detalle: "3 sesiones por grado en la IE Gonzalo Rivera Laguado" },
-    { fecha: "1 – 9 oct 2026", titulo: "Entrega final", detalle: "Demo funcional e informe con evidencias del proceso" },
-  ],
+
 
   fichaTecnica: [
     ["Estrategia", "Articulación con la Media · Doble Titulación"],
