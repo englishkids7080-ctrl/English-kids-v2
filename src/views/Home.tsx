@@ -77,7 +77,7 @@ export default function Home({ category, onSelectCategory, onPlay, onOpenCertifi
           className="inline-flex items-center gap-2 font-display font-bold text-xs sm:text-sm bg-sena text-white border-[3px] border-ink rounded-full px-4 py-1.5"
           style={{ boxShadow: "0 4px 0 rgba(30,58,110,0.9)" }}
         >
-          <span aria-hidden="true">🇨🇴</span> Proyecto formativo SENA · Ficha 7080 · ADSO
+          <span aria-hidden="true">🇨🇴</span> SENA · Ficha 3156695 · IE Gonzalo Rivera Laguado
         </p>
       </div>
 

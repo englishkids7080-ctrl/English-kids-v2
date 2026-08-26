@@ -1,41 +1,122 @@
+/**
+ * ============================================================
+ *  DATOS INSTITUCIONALES DEL PROYECTO
+ *  Tomados del documento de proyecto formativo:
+ *  "Articulación con la Media - Doble Titulación"
+ *  IE Gonzalo Rivera Laguado · SENA · Cúcuta
+ * ============================================================
+ */
+
 export const INSTITUTION = {
   nombre: "SENA",
   nombreCompleto: "Servicio Nacional de Aprendizaje",
+  estrategia: "Articulación con la Media · Doble Titulación",
+  institucionEducativa: "Institución Educativa Gonzalo Rivera Laguado",
+  ciudad: "Cúcuta",
   pais: "Colombia",
-  programa: "Análisis y Desarrollo de Software (ADSO)",
-  ficha: "7080",
+  programa: "Técnico en Sistemas Teleinformáticos",
+  codigoPrograma: "233108 v1",
+  ficha: "3156695",
+  vigencia: "2025 – 2026",
+  fechaInicio: "4 de agosto de 2025",
+  fechaFin: "9 de octubre de 2026",
   proyecto: "English Kids",
+  subtitulo: "Plataforma de aprendizaje de inglés para grados 3º a 5º de primaria",
   slogan: "Formación gratuita para todos los colombianos",
-  descripcion:
-    "English Kids es una aplicación web pensada para que los niños aprendan inglés jugando: exploran vocabulario por temas con tarjetas interactivas y pronunciación real, ponen a prueba lo aprendido en un quiz con corazones y puntos, refuerzan lo visto con un juego de memoria y, al completar los seis módulos, reclaman su mini-certificado de aprendizaje. Nació como proyecto formativo del SENA para desarrollar, de punta a punta, una solución web moderna: frontend con React, API serverless y base de datos en la nube con MongoDB desplegada en Vercel.",
+
+  problema:
+    "En muchas instituciones educativas, los estudiantes de 3º a 5º de primaria presentan dificultades para aprender inglés de manera efectiva: los métodos tradicionales no logran captar su atención ni adaptarse a sus formas de aprendizaje. Los niños pierden el interés, lo que afecta el desarrollo de sus habilidades comunicativas, y hacen falta herramientas digitales adecuadas para su edad que les permitan practicar el idioma de forma divertida y constante.",
+
+  solucion:
+    "English Kids es una plataforma web educativa dirigida a niños de 3º a 5º de primaria que transforma el aprendizaje del inglés en una experiencia divertida, accesible e interactiva. Combina tarjetas de vocabulario con pronunciación real, un quiz por módulos con corazones y estrellas, un juego de memoria y un certificado final, todo acompañado por Bubi, el búho profesor. Los docentes pueden recomendarla como apoyo a sus clases y las familias usarla en casa como refuerzo, para que los estudiantes pierdan el miedo al inglés y desarrollen gusto por aprenderlo.",
+
   objetivoGeneral:
-    "Desarrollar una aplicación web interactiva que facilite la enseñanza y el aprendizaje de vocabulario básico de inglés en niños de educación básica primaria, a través de actividades lúdicas con retroalimentación inmediata, como proyecto formativo del programa de Análisis y Desarrollo de Software del SENA.",
+    "Crear una plataforma web de aprendizaje de inglés para los grados de 3º a 5º de primaria.",
+
   objetivosEspecificos: [
-    "Diseñar una interfaz amigable, colorida y accesible, pensada para niños de 6 a 12 años.",
-    "Implementar tres actividades didácticas: tarjetas de vocabulario con pronunciación, quiz de opción múltiple con puntos y juego de memoria.",
-    "Integrar pronunciación en inglés con la Web Speech API, sonidos de animales y retroalimentación sonora amable en cada respuesta.",
-    "Evaluar el aprendizaje por módulos y generar un mini-certificado descargable al completar los seis temas.",
-    "Guardar el avance, las estrellas, el historial de partidas y el certificado en la caché local del navegador, para que cada equipo continúe donde quedó sin necesidad de cuentas ni servidores.",
+    "Encuestar a los docentes de 3º a 5º de primaria para conocer sus opiniones y necesidades frente al proceso de enseñanza del inglés.",
+    "Analizar los resultados de las encuestas y la retroalimentación docente para ajustar y mejorar el diseño de la plataforma, de modo que responda a las necesidades reales de los estudiantes.",
+    "Diseñar y validar bocetos de la plataforma, escuchando las recomendaciones de los docentes sobre su apariencia y funcionamiento.",
+    "Crear la plataforma web funcional con actividades interactivas, pronunciación en inglés y seguimiento del avance de cada estudiante.",
   ],
-  entregable: "Aplicación web completa: frontend, API y base de datos",
-  tecnologias: [
-    "React 18",
-    "Vite",
-    "TypeScript",
-    "Tailwind CSS",
-    "MongoDB Atlas",
-    "Vercel Functions",
-    "Web Speech API",
-    "WebAudio API",
-    "Canvas Confetti",
+
+  beneficios: [
+    "Favorece el aprendizaje interactivo y didáctico del idioma inglés.",
+    "Mejora las habilidades de escucha, lectura y pronunciación.",
+    "Motiva al estudiante con actividades digitales adaptadas a su nivel.",
+    "Facilita al docente la evaluación y el seguimiento del progreso individual.",
+    "Promueve el uso responsable y formativo de las TIC en el aula.",
   ],
+
+  integrantes: [
+    "Rogher Moncada",
+    "Yampier Herrera",
+    "Ricardo Rodriguez",
+    "Darwin Cabrera",
+    "Jayco Contreras",
+    "Sebastian Palacios",
+  ],
+
+  cifras: [
+    { valor: "3º a 5º", label: "grados de primaria" },
+    { valor: "6 módulos", label: "· 58 palabras en inglés" },
+    { valor: "$120.000", label: "vs $5.000.000 de la competencia" },
+    { valor: "30 %", label: "menos uso de papel y fotocopias" },
+  ],
+
+  impactos: [
+    {
+      id: "economico",
+      titulo: "Económico",
+      emoji: "💰",
+      color: "#ffc531",
+      texto:
+        "Ahorro estimado del 30 % en papelería y material impreso gracias a la digitalización de actividades, y optimización del tiempo docente al automatizar la evaluación y el seguimiento del progreso.",
+    },
+    {
+      id: "regional",
+      titulo: "Regional",
+      emoji: "🏙️",
+      color: "#59b9f2",
+      texto:
+        "Fortalece las competencias tecnológicas de Cúcuta: aprendices y técnicos locales aplican programación, diseño web y pedagogía digital, generando experiencia laboral en el sector educativo-tecnológico.",
+    },
+    {
+      id: "social",
+      titulo: "Social",
+      emoji: "🤝",
+      color: "#ff8fc0",
+      texto:
+        "Un espacio virtual interactivo que promueve la participación activa, la inclusión tecnológica y una mejor comunicación entre docentes, estudiantes y familias en torno al progreso académico.",
+    },
+    {
+      id: "ambiental",
+      titulo: "Ambiental",
+      emoji: "🌱",
+      color: "#4bc96b",
+      texto:
+        "Los contenidos digitales no generan desechos físicos: menos papel y tinta, uso eficiente de la energía y correcta disposición de los equipos al final de su vida útil.",
+    },
+  ],
+
+  hitos: [
+    { fecha: "4 ago 2025", titulo: "Inicio del proyecto", detalle: "Identificación del problema en el aula · Rogher Moncada" },
+    { fecha: "ago – sep 2025", titulo: "Idea y sustentación", detalle: "La propuesta se presenta y aprueba ante el grupo · Todo el equipo" },
+    { fecha: "16 – 20 feb 2026", titulo: "Encuesta a docentes", detalle: "Datos reales para definir contenidos y funciones · Ricardo Rodriguez" },
+    { fecha: "8 – 13 abr 2026", titulo: "Bocetos de la interfaz", detalle: "6 pantallas principales diseñadas para niños · Ricardo Rodriguez" },
+    { fecha: "10 – 19 jun 2026", titulo: "Seguimiento de progreso", detalle: "Panel de nivel, puntaje y actividades completadas · Yampier Herrera" },
+    { fecha: "10 – 14 ago 2026", titulo: "Prueba piloto", detalle: "3 sesiones por grado en la IE Gonzalo Rivera Laguado · Rogher Moncada" },
+    { fecha: "1 – 9 oct 2026", titulo: "Entrega final", detalle: "Demo funcional e informe con evidencias del proceso · Rogher Moncada" },
+  ],
+
   fichaTecnica: [
-    ["Institución", "SENA — Servicio Nacional de Aprendizaje"],
-    ["País", "Colombia 🇨🇴"],
-    ["Programa de formación", "Análisis y Desarrollo de Software (ADSO)"],
-    ["Ficha", "7080"],
-    ["Proyecto formativo", "English Kids"],
-    ["Entregable", "Aplicación web (frontend + API + base de datos)"],
-    ["Estado", "Funcional · listo para desplegar"],
+    ["Estrategia", "Articulación con la Media · Doble Titulación"],
+    ["Institución formadora", "SENA — Servicio Nacional de Aprendizaje"],
+    ["Institución educativa", "IE Gonzalo Rivera Laguado · Cúcuta 🇨🇴"],
+    ["Programa de formación", "Técnico en Sistemas Teleinformáticos · 233108 v1"],
+    ["Ficha", "3156695"],
+    ["Vigencia", "2025 – 2026 (4 ago 2025 → 9 oct 2026)"],
+    ["Población objetivo", "Estudiantes de 3º, 4º y 5º de primaria"],
+    ["Estado", "Plataforma web funcional"],
   ] as [string, string][],
 };

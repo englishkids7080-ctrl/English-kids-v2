@@ -129,8 +129,9 @@ export default function App() {
         {/* pie */}
         <footer className="max-w-6xl mx-auto px-4 sm:px-6 pb-8 mt-4">
           <div className="text-center font-bold text-sm text-ink-soft bg-white/60 border-2 border-ink/15 rounded-2xl px-4 py-3">
-            English Kids · Proyecto formativo <strong className="text-sena-deep">SENA</strong> 🇨🇴 ·
-            Ficha 7080 · ADSO · tu avance se guarda en este navegador · hecho con cariño 🌈
+            English Kids · <strong className="text-sena-deep">SENA</strong> 🇨🇴 · Ficha 3156695 ·
+            Técnico en Sistemas Teleinformáticos · IE Gonzalo Rivera Laguado (Cúcuta) ·
+            tu avance se guarda en este navegador 🌈
           </div>
         </footer>
       </div>
