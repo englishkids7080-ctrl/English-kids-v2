@@ -1,0 +1,20 @@
+# Dependencias
+node_modules/
+
+# Compilación (Vercel la genera sola)
+dist/
+.vercel/
+
+# ⚠️ NUNCA subir claves: la cadena de MongoDB vive aquí
+.env
+.env.local
+.env.*.local
+
+# Editor y sistema
+.DS_Store
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+.next/
+build/

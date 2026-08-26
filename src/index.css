@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Baloo 2", "Trebuchet MS", ui-rounded, sans-serif;
+  --font-body: "Nunito", "Segoe UI", ui-sans-serif, sans-serif;
+
+  --color-ink: #1e3a6e;
+  --color-ink-soft: #46618f;
+  --color-paper: #f2faff;
+  --color-sun: #ffc531;
+  --color-sun-deep: #f5a623;
+  --color-coral: #ff6b6b;
+  --color-leaf: #4bc96b;
+  --color-sky: #59b9f2;
+  --color-sky-deep: #2e8fd6;
+  --color-grape: #8f7bf7;
+  --color-candy: #ff8fc0;
+  --color-sena: #39a900;
+  --color-sena-deep: #2b8000;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: linear-gradient(180deg, #8ed8ff 0%, #c2eaff 46%, #e8f7ff 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-sun);
+  color: var(--color-ink);
+}
+
+/* ---------- piezas "toy" ---------- */
+
+.card-toy {
+  background: #ffffff;
+  border: 3px solid var(--color-ink);
+  border-radius: 1.4rem;
+  box-shadow: 0 6px 0 rgba(30, 58, 110, 0.9);
+}
+
+.btn-toy {
+  font-family: var(--font-display);
+  font-weight: 700;
+  border: 3px solid var(--color-ink);
+  border-radius: 999px;
+  box-shadow: 0 5px 0 var(--color-ink);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 90ms ease, box-shadow 90ms ease, filter 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-toy:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+.btn-toy:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--color-ink);
+}
+.btn-toy:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tile-wobble:hover {
+  animation: wobble 0.5s ease-in-out;
+}
+
+/* ---------- tarjetas de memoria / flashcards ---------- */
+
+.flip-scene {
+  perspective: 1100px;
+}
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.72s cubic-bezier(0.3, 1.2, 0.4, 1);
+}
+.flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+/* ---------- keyframes ---------- */
+
+@keyframes wobble {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-2.5deg) scale(1.04); }
+  50% { transform: rotate(2deg) scale(1.05); }
+  75% { transform: rotate(-1.5deg) scale(1.03); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+@keyframes drift {
+  from { transform: translateX(-32vw); }
+  to   { transform: translateX(112vw); }
+}
+@keyframes rays-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+@keyframes pop-in {
+  0%   { transform: scale(0.6); opacity: 0; }
+  70%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes shake-x {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-9px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(4px); }
+}
+@keyframes balloon-up {
+  0%   { transform: translateY(12vh) rotate(-4deg); opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateY(-108vh) rotate(6deg); opacity: 0; }
+}
+@keyframes heart-lost {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.5) rotate(-10deg); }
+  100% { transform: scale(1); }
+}
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes blink-soft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+.anim-pop      { animation: pop-in 0.35s cubic-bezier(0.3, 1.4, 0.5, 1) both; }
+.anim-shake    { animation: shake-x 0.45s ease both; }
+.anim-float    { animation: float-soft 4.5s ease-in-out infinite; }
+.anim-bounce   { animation: bounce-soft 1.6s ease-in-out infinite; }
+
+.cloud {
+  position: absolute;
+  animation-name: drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+/* ---------- letras animadas (quiz / flashcards) ---------- */
+
+.letters .letter {
+  display: inline-block;
+  transition:
+    transform 0.5s cubic-bezier(0.3, 1.4, 0.4, 1),
+    color 0.45s ease;
+}
+/* al pasar el cursor, las letras crecen poco a poco */
+.letters-grow:hover .letter {
+  transform: scale(1.16) translateY(-2px);
+}
+/* al elegir una tarjeta, crecen más y toman el color del fondo */
+.letters .letter-selected {
+  transform: scale(1.3) translateY(-3px);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+}
+/* entrada escalonada (cada letra florece detrás de la anterior) */
+.letters .letter-pre {
+  transform: scale(0.2) translateY(14px);
+  opacity: 0;
+}
+
+/* ---------- impresión del certificado ---------- */
+
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
