@@ -1,52 +1,52 @@
-# English Kids 🦉 — Proyecto formativo SENA (Ficha 7080 · ADSO)
+# English Kids 🦉 — Proyecto formativo SENA (Ficha 3156695)
 
-Aplicación web para que los niños aprendan inglés jugando, reescrita desde cero, limpia y funcional:
+**Articulación con la Media · Doble Titulación** — Técnico en Sistemas Teleinformáticos (código 233108 v1)
+Institución Educativa Gonzalo Rivera Laguado · Cúcuta, Colombia · Vigencia 2025–2026
 
-- **Aprender**: tarjetas de vocabulario con pronunciación en inglés (Web Speech API) y sonidos de animales.
-- **Quiz**: evaluación por módulos con corazones, estrellas y puntuación (4+ aciertos aprueban el módulo).
-- **Memoria**: parejas dibujo–palabra con cronómetro.
-- **Certificado**: al completar los 6 módulos se desbloquea el cofre y se genera un mini-certificado con nombre, fecha y opción de imprimir.
-- **Alumnos**: perfiles, perfil activo e historial de partidas.
-- Sonidos amigables sintetizados con WebAudio (sin archivos externos), animaciones de letras y transiciones pausadas.
+Plataforma de aprendizaje de inglés para estudiantes de **3º a 5º de primaria**:
 
-## Modos de datos
+- **Aprender** — tarjetas con dibujo, palabra y pronunciación en inglés (voz real del navegador) y sonidos de animales.
+- **Quiz** — evaluación por módulos: 8 preguntas, 3 corazones, estrellas y confeti. Con 4+ aciertos el módulo queda aprobado.
+- **Memoria** — parejas dibujo–palabra con cronómetro e intentos.
+- **Gran Certificado** — al aprobar los 6 módulos se desbloquea el cofre y se genera un mini-certificado con nombre, fecha y opción de imprimir.
+- **Proyecto** — carátula institucional con el problema, los objetivos, el equipo, los impactos y la ficha técnica.
 
-- **Modo demo (sin backend):** todo funciona igual; alumnos, puntuaciones y progreso se guardan en el navegador (`localStorage`).
-- **Modo nube:** si detecta la API (`/api/health`), guarda alumnos y puntuaciones en **MongoDB** automáticamente.
+## ¿Dónde se guarda la información?
+
+No usa cuentas ni servidores: **todo se guarda en la caché del navegador** (localStorage).
+Cada computador/navegador conserva su propio avance: módulos aprobados, estrellas, historial de partidas y certificado.
+Si se borra la caché del navegador, el progreso se reinicia (hay botón "Borrar progreso" en la pestaña Diploma).
 
 ## Ejecutar en local
 
 ```bash
 npm install
-npm run dev        # solo frontend (modo demo)
+npm run dev
 ```
 
-Para probar el backend localmente:
+## Publicar en internet (GitHub → Vercel)
 
-```bash
-# requiere la CLI de Vercel
-vercel dev
-```
+Es una aplicación 100 % estática: no necesita base de datos ni variables de entorno.
 
-## Desplegar en Vercel con MongoDB
+1. **Sube el código a GitHub**
+   - Crea un repositorio nuevo (por ejemplo `English-Kids`) en [github.com/new](https://github.com/new).
+   - Sube los archivos del proyecto (sin la carpeta `node_modules`, que se regenera sola).
+2. **Conecta Vercel**
+   - Entra a [vercel.com](https://vercel.com) → **Add New Project** → importa el repositorio.
+   - Vercel detecta Vite automáticamente: comando `npm run build`, carpeta de salida `dist`.
+   - Pulsa **Deploy**. En ~1 minuto la app estará en `https://tu-proyecto.vercel.app`.
+3. Cada `git push` a la rama `main` genera un nuevo despliegue automático.
 
-1. Crea un clúster gratuito en [MongoDB Atlas](https://www.mongodb.com/atlas) y obtén tu `MONGODB_URI`.
-2. Sube este proyecto a GitHub.
-3. En [vercel.com](https://vercel.com) → **Add New Project** → importa el repositorio (Vercel detecta Vite solo).
-4. En **Settings → Environment Variables** añade:
-   - `MONGODB_URI` = tu cadena de conexión
-   - `MONGODB_DB` = `englishkids` (opcional)
-5. **Deploy**. La web queda en `https://tu-proyecto.vercel.app` con base de datos conectada.
+> 💡 También puedes usar **Netlify** o **GitHub Pages**: basta con publicar la carpeta `dist` que genera `npm run build`.
 
-## Estructura
+## Estructura del código
 
 ```
 src/
-  views/      Home · Flashcards · Quiz · Memory · Students · Certificate · Project
-  lib/        api.ts (nube con respaldo local) · sound.ts (voz, efectos y animales) · progress.ts (módulos y certificado)
-  components/ Background · Mascot · Letters
-  data/       vocabulario EN/ES · datos institucionales del proyecto
-api/          Serverless functions de Vercel (MongoDB)
+  views/        Home · Flashcards · Quiz · Memory · Certificate · Project
+  lib/          sound.ts (voz, efectos y animales) · store.ts (progreso en caché)
+  components/   Background · Mascot · Letters
+  data/         vocabulario EN/ES · información institucional del proyecto
 ```
 
-Los datos institucionales (SENA, ficha, objetivos) se editan en `src/data/project.ts`.
+Lógica de sonido separada de la visual, estados de carga/finalizado explícitos y comentarios en español.
