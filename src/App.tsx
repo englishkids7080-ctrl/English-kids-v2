@@ -121,7 +121,7 @@ export default function App() {
           )}
           {view === "memory" && <Memory category={category} onExit={goHome} notify={notify} />}
           {view === "certificado" && <Certificate notify={notify} />}
-          {view === "proyecto" && <Project notify={notify} />}
+          {view === "proyecto" && <Project onGoHome={goHome} />}
         </main>
 
         <footer className="max-w-6xl mx-auto px-4 sm:px-6 pb-8 mt-4">
