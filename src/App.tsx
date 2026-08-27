@@ -37,7 +37,6 @@ export default function App() {
       <Background />
 
       <div className="relative z-10">
-        {/* cabecera */}
         <header className="max-w-6xl mx-auto px-4 sm:px-6 pt-5">
           <div className="card-toy flex items-center gap-3 px-4 py-3 flex-wrap" style={{ borderRadius: "1.6rem" }}>
             <button onClick={goHome} className="flex items-center gap-2.5 cursor-pointer" aria-label="Ir al inicio">
@@ -102,7 +101,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* contenido */}
         <main className="pt-8 sm:pt-10">
           {view === "home" && (
             <Home
@@ -123,10 +121,9 @@ export default function App() {
           )}
           {view === "memory" && <Memory category={category} onExit={goHome} notify={notify} />}
           {view === "certificado" && <Certificate notify={notify} />}
-          {view === "proyecto" && <Project notify={notify} />}
+          {view === "proyecto" && <Project onGoHome={goHome} />}
         </main>
 
-        {/* pie */}
         <footer className="max-w-6xl mx-auto px-4 sm:px-6 pb-8 mt-4">
           <div className="text-center font-bold text-sm text-ink-soft bg-white/60 border-2 border-ink/15 rounded-2xl px-4 py-3">
             English Kids · <strong className="text-sena-deep">SENA</strong> 🇨🇴 · Ficha 3156695 ·
@@ -136,7 +133,6 @@ export default function App() {
         </footer>
       </div>
 
-      {/* toast */}
       {toast && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 anim-pop" role="status">
           <div className="card-toy bg-ink text-white font-display font-bold px-6 py-3 flex items-center gap-2.5" style={{ boxShadow: "0 6px 0 rgba(10,22,48,0.9)" }}>

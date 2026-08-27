@@ -49,7 +49,6 @@ export default function Certificate({ notify }: Props) {
   const claim = () => {
     if (claiming) return;
     setClaiming(true);
-    // Pequeña pausa para mostrar el estado "preparando"
     window.setTimeout(() => {
       const cert = claimCertificate(name);
       playMagic();
@@ -66,7 +65,6 @@ export default function Certificate({ notify }: Props) {
     }, 900);
   };
 
-  /** Borrado seguro en dos toques (sin ventanas bloqueantes). */
   const onReset = () => {
     if (!confirmReset) {
       setConfirmReset(true);
@@ -91,7 +89,6 @@ export default function Certificate({ notify }: Props) {
         <span className="block text-xs mt-0.5">Todo se guarda en la caché de este navegador.</span>
       </p>
 
-      {/* ---------- el cofre ---------- */}
       <div className="flex flex-col items-center mt-8">
         <button
           onClick={onChest}

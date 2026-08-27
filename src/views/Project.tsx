@@ -20,7 +20,7 @@ function SenaLogo({ size = 74 }: { size?: number }) {
   );
 }
 
-export default function Project({ notify }: { notify: (msg: string) => void }) {
+export default function Project({ onGoHome }: { onGoHome: () => void }) {
   return (
     <div className="max-w-5xl mx-auto px-4 pb-16">
       {/* ================= carátula institucional ================= */}
@@ -237,7 +237,7 @@ export default function Project({ notify }: { notify: (msg: string) => void }) {
       </div>
 
       <button
-        onClick={() => notify("¡Gracias por visitar el proyecto formativo!")}
+        onClick={onGoHome}
         className="btn-toy bg-sena text-white px-6 py-3 mt-6 mx-auto flex text-lg"
       >
         ¡Entendido, profesor! 🦉

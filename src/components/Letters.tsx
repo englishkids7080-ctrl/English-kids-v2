@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
 
-/**
- * Palabra dibujada letra por letra para poder animarlas:
- *  · grow     → crecen poco a poco al pasar el cursor
- *  · selected → al elegir, cada letra crece y toma el color
- *               del fondo de la tarjeta (con efecto de ola)
- *  · animateIn→ entran creciendo escalonadas al aparecer
- */
 interface Props {
   word: string;
   grow?: boolean;
@@ -26,7 +19,6 @@ export default function Letters({
 }: Props) {
   const [mounted, setMounted] = useState(!animateIn);
 
-  // Al aparecer, las letras esperan un instante y luego "florean" en orden
   useEffect(() => {
     if (!animateIn) {
       setMounted(true);

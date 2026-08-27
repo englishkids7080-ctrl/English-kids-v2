@@ -1,15 +1,5 @@
-/**
- * ============================================================
- *  MOTOR DE SONIDO — English Kids
- *  Toda la lógica sonora vive aquí, separada de la interfaz.
- *  Los tonos son graves/medios y de envolvente suave para que
- *  suenen amigables y nada "ruidosos".
- * ============================================================
- */
-
 let ctx: AudioContext | null = null;
 
-/** Devuelve (y crea si hace falta) el contexto de audio. */
 function getCtx(): AudioContext | null {
   try {
     if (!ctx) {
@@ -26,10 +16,6 @@ function getCtx(): AudioContext | null {
   }
 }
 
-/**
- * Nota suave: ataque lento y caída exponencial para evitar
- * clics o pitidos molestos.
- */
 function tone(
   freq: number,
   start: number,
@@ -54,132 +40,114 @@ function tone(
     osc.start(t0);
     osc.stop(t0 + dur + 0.1);
   } catch {
-    /* si el audio falla, la app sigue funcionando en silencio */
+    return;
   }
 }
 
-/** Desbloquea el audio tras el primer toque (política de navegadores). */
 function unlockAudio() {
   try {
     getCtx();
   } catch {
-    /* sin audio disponible */
+    return;
   }
 }
 if (typeof window !== "undefined") {
   window.addEventListener("pointerdown", unlockAudio, { once: true });
 }
 
-/* ---------- sonidos de interacción (suaves) ---------- */
-
-/** Clic general: "pop" corto y redondo. */
 export function playClick() {
   tone(420, 0, 0.1, "sine", 0.09, 0.012);
   tone(640, 0.02, 0.09, "sine", 0.05);
 }
 
-/** Acierto: arpegio cálido ascendente. */
 export function playCorrect() {
   tone(392, 0, 0.16, "sine", 0.11);
   tone(494, 0.1, 0.16, "sine", 0.11);
   tone(587, 0.2, 0.3, "sine", 0.11);
 }
 
-/** Fallo: dos tonos descendentes suaves (aviso amable, sin castigo). */
 export function playWrong() {
   tone(294, 0, 0.22, "sine", 0.09);
   tone(233, 0.16, 0.3, "sine", 0.09);
 }
 
-/** Voltear tarjeta: deslizamiento breve. */
 export function playFlip() {
   tone(660, 0, 0.08, "sine", 0.06);
   tone(880, 0.06, 0.09, "sine", 0.05);
 }
 
-/** Pequeño brillo al descubrir una pareja. */
 export function playSparkle() {
   tone(1046, 0, 0.1, "sine", 0.05);
   tone(1318, 0.07, 0.12, "sine", 0.05);
 }
 
-/** Victoria de fin de juego: melodía corta y alegre. */
 export function playWin() {
   [392, 494, 587, 784, 988].forEach((f, i) => tone(f, i * 0.13, 0.26, "sine", 0.1));
   tone(1175, 0.68, 0.5, "sine", 0.09);
 }
 
-/** Cofre desbloqueado: campanillas. */
 export function playUnlock() {
   [523, 659, 784, 1046, 1318, 1568].forEach((f, i) => tone(f, i * 0.09, 0.3, "sine", 0.08));
 }
 
-/** Cofre aún bloqueado: golpe suave de madera. */
 export function playLocked() {
   tone(180, 0, 0.12, "triangle", 0.1);
   tone(150, 0.1, 0.14, "triangle", 0.08);
 }
 
-/** Certificado reclamado: fanfarria dulce. */
 export function playMagic() {
   [523, 659, 784].forEach((f, i) => tone(f, i * 0.1, 0.24, "sine", 0.09));
   [1046, 1318, 1568].forEach((f, i) => tone(f, 0.34 + i * 0.09, 0.34, "sine", 0.07));
 }
 
-/* ---------- sonidos de animales (sintetizados) ---------- */
-
-/**
- * Cada animal tiene su "voz" hecha con osciladores:
- * nada de archivos externos, todo funciona sin internet.
- */
 export function playAnimal(name: string) {
   switch (name) {
-    case "dog": // aullido: sube y baja
+    case "dog":
       tone(392, 0, 0.28, "sawtooth", 0.07);
       tone(300, 0.24, 0.3, "sawtooth", 0.07);
       tone(240, 0.5, 0.34, "sawtooth", 0.06);
       break;
-    case "cat": // miau: sube y cae suave
+    case "cat":
       tone(520, 0, 0.2, "sine", 0.09);
       tone(700, 0.16, 0.18, "sine", 0.09);
       tone(420, 0.34, 0.26, "sine", 0.08);
       break;
-    case "bird": // pío pío
+    case "bird":
       [0, 0.22].forEach((t) => {
         tone(1400, t, 0.09, "sine", 0.06);
         tone(1800, t + 0.08, 0.08, "sine", 0.05);
       });
       break;
-    case "fish": // glub glub
+    case "fish":
       tone(220, 0, 0.1, "sine", 0.08);
       tone(330, 0.14, 0.1, "sine", 0.07);
       tone(260, 0.3, 0.1, "sine", 0.07);
       break;
-    case "horse": // relincho suave
+    case "horse":
       tone(440, 0, 0.14, "sawtooth", 0.05);
       tone(520, 0.12, 0.14, "sawtooth", 0.05);
       tone(392, 0.26, 0.2, "sawtooth", 0.05);
       break;
-    case "frog": // croac
+    case "frog":
       tone(160, 0, 0.12, "square", 0.05);
       tone(130, 0.14, 0.16, "square", 0.05);
       break;
-    case "duck": // cuac cuac
+    case "duck":
       tone(500, 0, 0.1, "square", 0.05);
       tone(430, 0.12, 0.12, "square", 0.05);
       tone(500, 0.3, 0.1, "square", 0.05);
       tone(430, 0.42, 0.12, "square", 0.05);
       break;
-    case "lion": // rugido grave
+    case "lion":
       tone(110, 0, 0.5, "sawtooth", 0.08);
       tone(98, 0.2, 0.45, "sawtooth", 0.07);
       break;
-    case "elephant": // trompeta
+    case "elephant":
       tone(250, 0, 0.3, "sawtooth", 0.06);
       tone(340, 0.24, 0.3, "sawtooth", 0.06);
       tone(300, 0.5, 0.2, "sawtooth", 0.05);
       break;
-    case "rabbit": // saltito
+    case "rabbit":
       tone(700, 0, 0.07, "sine", 0.06);
       tone(900, 0.09, 0.07, "sine", 0.06);
       break;
@@ -188,9 +156,6 @@ export function playAnimal(name: string) {
   }
 }
 
-/* ---------- voz (pronunciación en inglés) ---------- */
-
-/** Pronuncia un texto en inglés con la voz del navegador. */
 export function speak(text: string) {
   try {
     if (!("speechSynthesis" in window)) return;
@@ -205,6 +170,6 @@ export function speak(text: string) {
     if (voice) u.voice = voice;
     window.speechSynthesis.speak(u);
   } catch {
-    /* sin síntesis de voz disponible */
+    return;
   }
 }

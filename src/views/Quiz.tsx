@@ -5,7 +5,6 @@ import Letters from "../components/Letters";
 import { getSummary, markModuleDone, recordScore, starsFor, PASS_SCORE } from "../lib/store";
 import { playAnimal, playCorrect, playFlip, playWin, playWrong, speak } from "../lib/sound";
 
-/* Preguntas por partida */
 const QUESTION_COUNT = 8;
 
 interface Question {
@@ -53,7 +52,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
   const q = questions[qIdx];
   const isAnimals = category.id === "animals";
 
-  /* Al llegar cada pregunta: se pronuncia (y suena el animal si aplica) */
   useEffect(() => {
     speak(q.word.en);
     if (isAnimals) playAnimal(q.word.en);
@@ -70,7 +68,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
     setAllDone(false);
   };
 
-  /** Cierra la partida: guarda en la caché, marca el módulo y celebra. */
   const finish = (correct: number, answered: number) => {
     recordScore({ mode: "quiz", category: category.id, correct, total: answered });
     const before = getSummary();
@@ -86,7 +83,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
         colors: ["#ffc531", "#ff6b6b", "#4bc96b", "#59b9f2", "#ff8fc0"],
       });
     }
-    // ¿Este quiz acaba de completar los 6 módulos?
     if (!before.allDone && after.allDone && !after.claimed) {
       setAllDone(true);
       notify("¡Completaste todos los módulos! Tu certificado te espera 🏆");
@@ -103,7 +99,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
     const newHearts = ok ? hearts : hearts - 1;
     if (!ok) setHearts(newHearts);
 
-    // Refuerzo sonoro pausado: primero el sonido, luego la voz
     if (ok) {
       if (isAnimals) playAnimal(q.word.en);
       else playCorrect();
@@ -113,7 +108,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
       window.setTimeout(() => speak(q.word.en), 450); // escucha la respuesta correcta
     }
 
-    // Transición pausada para que alcance a leer (y escuchar) antes de avanzar
     window.setTimeout(() => {
       setPicked(null);
       if (newHearts <= 0 || qIdx + 1 >= questions.length) finish(newCorrect, qIdx + 1);
@@ -121,7 +115,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
     }, isAnimals ? 2000 : 1500);
   };
 
-  /* ---------- pantalla final ---------- */
   if (finished) {
     const stars = starsFor(correctCount, questions.length);
     const passed = correctCount >= PASS_SCORE;
@@ -133,7 +126,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
             {passed ? `¡Módulo ${category.nameEn} superado!` : "¡Casi lo logras!"}
           </h2>
 
-          {/* estrellas ganadas */}
           <div className="flex justify-center gap-1.5 mt-3" aria-label={`${stars} de 5 estrellas`}>
             {[1, 2, 3, 4, 5].map((n) => (
               <svg key={n} width="34" height="34" viewBox="0 0 24 24" className="anim-pop" style={{ animationDelay: `${n * 120}ms` }} aria-hidden="true">
@@ -182,10 +174,8 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
     );
   }
 
-  /* ---------- pantalla de juego ---------- */
   return (
     <div className="max-w-xl mx-auto px-4 pb-16">
-      {/* barra superior */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <button onClick={onExit} className="btn-toy bg-white text-ink px-4 py-2 text-sm">
           Salir
@@ -203,7 +193,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
         </div>
       </div>
 
-      {/* progreso de preguntas */}
       <div className="h-5 rounded-full border-[3px] border-ink bg-white overflow-hidden mt-5">
         <div
           className="h-full transition-all duration-500"
@@ -214,7 +203,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
         />
       </div>
 
-      {/* tarjeta de pregunta */}
       <div className="card-toy mt-5 p-6 text-center">
         <p className="font-display font-bold text-lg text-ink-soft">Escucha y elige la palabra correcta</p>
         <div className="text-[5.5rem] leading-none mt-2" aria-hidden="true">{q.word.emoji}</div>
@@ -238,7 +226,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
         </p>
       </div>
 
-      {/* opciones */}
       <div className="grid grid-cols-2 gap-3.5 mt-5">
         {q.options.map((opt) => {
           const isPicked = picked === opt.en;
@@ -269,7 +256,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
               }}
               aria-label={opt.en}
             >
-              {/* las letras crecen poco a poco y, al elegir, toman el color de la tarjeta */}
               <Letters
                 word={opt.en}
                 grow
@@ -282,7 +268,6 @@ export default function Quiz({ category, onExit, onGoCertificate, notify }: Prop
         })}
       </div>
 
-      {/* mensaje de refuerzo pausado */}
       <div className="h-8 mt-4 text-center font-display font-extrabold text-xl" aria-live="polite">
         {picked !== null &&
           (picked === q.word.en ? (
