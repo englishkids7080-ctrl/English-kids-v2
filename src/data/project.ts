@@ -58,9 +58,9 @@ export const INSTITUTION = {
   ],
 
   cifras: [
-    { valor: "3º a 5º", label: "grados de primaria" },
+    { valor: "1º a 3º", label: "grados de primaria" },
     { valor: "6 módulos", label: "· 58 palabras en inglés" },
-    { valor: "$120.000", label: "vs $5.000.000 de la competencia" },
+    { valor: "$210.000", label: "vs $5.000.000 de la competencia" },
     { valor: "30 %", label: "menos uso de papel y fotocopias" },
   ],
 
