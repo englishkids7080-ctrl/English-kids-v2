@@ -21,20 +21,20 @@ export const INSTITUTION = {
   fechaInicio: "4 de agosto de 2025",
   fechaFin: "9 de octubre de 2026",
   proyecto: "English Kids",
-  subtitulo: "Plataforma de aprendizaje de inglés para grados 3º a 5º de primaria",
+  subtitulo: "Plataforma de aprendizaje de inglés para grados 1º a 3º de primaria",
   slogan: "Formación gratuita para todos los colombianos",
 
   problema:
-    "En muchas instituciones educativas, los estudiantes de 3º a 5º de primaria presentan dificultades para aprender inglés de manera efectiva: los métodos tradicionales no logran captar su atención ni adaptarse a sus formas de aprendizaje. Los niños pierden el interés, lo que afecta el desarrollo de sus habilidades comunicativas, y hacen falta herramientas digitales adecuadas para su edad que les permitan practicar el idioma de forma divertida y constante.",
+    "En muchas instituciones educativas, los estudiantes de 1º a 3º de primaria presentan dificultades para aprender inglés de manera efectiva: los métodos tradicionales no logran captar su atención ni adaptarse a sus formas de aprendizaje. Los niños pierden el interés, lo que afecta el desarrollo de sus habilidades comunicativas, y hacen falta herramientas digitales adecuadas para su edad que les permitan practicar el idioma de forma divertida y constante.",
 
   solucion:
-    "English Kids es una plataforma web educativa dirigida a niños de 3º a 5º de primaria que transforma el aprendizaje del inglés en una experiencia divertida, accesible e interactiva. Combina tarjetas de vocabulario con pronunciación real, un quiz por módulos con corazones y estrellas, un juego de memoria y un certificado final, todo acompañado por Bubi, el búho profesor. Los docentes pueden recomendarla como apoyo a sus clases y las familias usarla en casa como refuerzo, para que los estudiantes pierdan el miedo al inglés y desarrollen gusto por aprenderlo.",
+    "English Kids es una plataforma web educativa dirigida a niños de 1º a 3º de primaria que transforma el aprendizaje del inglés en una experiencia divertida, accesible e interactiva. Combina tarjetas de vocabulario con pronunciación real, un quiz por módulos con corazones y estrellas, un juego de memoria y un certificado final, todo acompañado por Bubi, el búho profesor. Los docentes pueden recomendarla como apoyo a sus clases y las familias usarla en casa como refuerzo, para que los estudiantes pierdan el miedo al inglés y desarrollen gusto por aprenderlo.",
 
   objetivoGeneral:
-    "Crear una plataforma web de aprendizaje de inglés para los grados de 3º a 5º de primaria.",
+    "Crear una plataforma web de aprendizaje de inglés para los grados de 1º a 3º de primaria.",
 
   objetivosEspecificos: [
-    "Encuestar a los docentes de 3º a 5º de primaria para conocer sus opiniones y necesidades frente al proceso de enseñanza del inglés.",
+    "Encuestar a los docentes de 1º a 3º de primaria para conocer sus opiniones y necesidades frente al proceso de enseñanza del inglés.",
     "Analizar los resultados de las encuestas y la retroalimentación docente para ajustar y mejorar el diseño de la plataforma, de modo que responda a las necesidades reales de los estudiantes.",
     "Diseñar y validar bocetos de la plataforma, escuchando las recomendaciones de los docentes sobre su apariencia y funcionamiento.",
     "Crear la plataforma web funcional con actividades interactivas, pronunciación en inglés y seguimiento del avance de cada estudiante.",
@@ -108,7 +108,7 @@ export const INSTITUTION = {
     ["Programa de formación", "Técnico en Sistemas Teleinformáticos · 233108 v1"],
     ["Ficha", "3156695"],
     ["Vigencia", "2025 – 2026 (4 ago 2025 → 9 oct 2026)"],
-    ["Población objetivo", "Estudiantes de 3º, 4º y 5º de primaria"],
+    ["Población objetivo", "Estudiantes de 1º, 2º y 3º de primaria"],
     ["Estado", "Plataforma web funcional"],
   ] as [string, string][],
 };
